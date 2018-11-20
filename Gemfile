@@ -21,6 +21,7 @@ end
 group :development, :test do
   gem 'factory_bot_rails'
   gem 'rspec-rails', '~> 3.8'
+  gem 'timecop', '~> 0.9.1'
 end
 
 group :test do
