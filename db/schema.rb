@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_20_002537) do
+ActiveRecord::Schema.define(version: 2018_11_20_010426) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,14 @@ ActiveRecord::Schema.define(version: 2018_11_20_002537) do
     t.decimal "longitude", precision: 10, scale: 6
     t.datetime "started_at"
     t.datetime "ended_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "pets", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "breed"
+    t.date "born_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
