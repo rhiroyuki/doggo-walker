@@ -3,5 +3,6 @@
 FactoryBot.define do
   factory :pet do
     name { 'Hachi' }
+    pet_owner
   end
 end
