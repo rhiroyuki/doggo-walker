@@ -8,6 +8,7 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.11'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'pry-rails', '~>0.3.7'
+gem 'fast_jsonapi', '~>1.5'
 
 group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
