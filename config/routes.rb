@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  resources :dog_walking, only: [:index]
+  namespace :api do
+    namespace :v1 do
+      resources :dog_walking, only: [:index]
+    end
+  end
 end
