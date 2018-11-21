@@ -11,6 +11,12 @@ module Api
         render json: dog_serializer, status: :ok
       end
 
+      def show
+        dog_walking = DogWalking.find(params[:id]).decorate
+
+        render json: DogWalkingSerializer.new(dog_walking), status: 200
+      end
+
       private
 
       def dog_walking_scope

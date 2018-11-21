@@ -6,6 +6,44 @@ describe Api::V1::DogWalkingsController do
   before { Timecop.freeze(Time.now.to_date) }
   after { Timecop.return }
 
+  describe 'GET show' do
+    context 'when dogwalking record exists' do
+      it 'returns a http status code 200' do
+        create(:dog_walking, id: 1)
+
+        get :show, params: { id: 1 }
+
+        expect(response).to have_http_status(200)
+      end
+
+      it 'returns the dogwalking' do
+        dog_walking = create(:dog_walking)
+
+        get :show, params: { id: dog_walking.id }
+
+        json = JSON.parse(response.body)
+
+        body = {
+          'data' => {
+            'id' => dog_walking.id.to_s,
+            'type' => 'dog_walking',
+            'attributes' => {
+              'status' => 'scheduled',
+              'scheduled_at' => nil,
+              'price_value' => '10.0',
+              'scheduled_duration' => '30 minutes',
+              'latitude' => nil,
+              'longitude' => nil,
+              'started_at' => nil,
+              'ended_at' => nil
+            }
+          }
+        }
+        expect(json).to match(body)
+      end
+    end
+  end
+
   describe 'GET index' do
     context 'when querying page' do
       context 'when page is valid' do
