@@ -7,6 +7,22 @@ describe Api::V1::DogWalkingsController do
   after { Timecop.return }
 
   describe 'GET index' do
+    context 'when querying page' do
+      context 'when page is valid' do
+        it 'returns http status code 200' do
+          create(:dog_walking, scheduled_at: Time.now.tomorrow)
+          get :index, params: { page: 1 }
+
+          expect(response).to have_http_status(200)
+        end
+      end
+      context 'when page is invalid' do
+        it 'returns http status code 404' do
+          expect { get :index, params: { page: 2 } }
+            .to raise_error(ActionController::RoutingError)
+        end
+      end
+    end
     context 'when retrieving the scheduled ones' do
       it 'returns a 200 http status code' do
         get :index, params: { only_scheduleds: true }
