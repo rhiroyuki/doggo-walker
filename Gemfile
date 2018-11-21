@@ -5,6 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.5.3'
 
+gem 'api-pagination'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'draper', '~> 3.0.1'
 gem 'fast_jsonapi', '~>1.5'

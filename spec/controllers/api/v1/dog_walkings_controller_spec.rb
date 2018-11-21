@@ -16,13 +16,16 @@ describe Api::V1::DogWalkingsController do
           expect(response).to have_http_status(200)
         end
       end
+
       context 'when page is invalid' do
         it 'returns http status code 404' do
-          expect { get :index, params: { page: 2 } }
-            .to raise_error(ActionController::RoutingError)
+          get :index, params: { page: 2 }
+
+          expect(response).to have_http_status(404)
         end
       end
     end
+
     context 'when retrieving the scheduled ones' do
       it 'returns a 200 http status code' do
         get :index, params: { only_scheduleds: true }
@@ -45,7 +48,7 @@ describe Api::V1::DogWalkingsController do
               'type' => 'dog_walking',
               'attributes' => {
                 'status' => 'scheduled',
-                'scheduled_at' => '2018-11-21T00:00:00.000Z',
+                'scheduled_at' => dog_walking.scheduled_at,
                 'price_value' => '10.0',
                 'scheduled_duration' => '30 minutes',
                 'latitude' => nil,
@@ -54,12 +57,7 @@ describe Api::V1::DogWalkingsController do
                 'ended_at' => nil
               }
             }
-          ],
-          'meta' => {
-            'items' => 1,
-            'page' => 1,
-            'pages' => 1
-          }
+          ]
         }
         expect(json).to match(body)
       end
@@ -86,7 +84,7 @@ describe Api::V1::DogWalkingsController do
               'type' => 'dog_walking',
               'attributes' => {
                 'status' => 'scheduled',
-                'scheduled_at' => '2018-11-21T00:00:00.000Z',
+                'scheduled_at' => dog_walking.scheduled_at,
                 'price_value' => '10.0',
                 'scheduled_duration' => '30 minutes',
                 'latitude' => nil,
@@ -95,12 +93,7 @@ describe Api::V1::DogWalkingsController do
                 'ended_at' => nil
               }
             }
-          ],
-          'meta' => {
-            'items' => 1,
-            'page' => 1,
-            'pages' => 1
-          }
+          ]
         }
         expect(json).to match(body)
       end

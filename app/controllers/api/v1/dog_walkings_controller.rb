@@ -4,24 +4,23 @@ module Api
   module V1
     class DogWalkingsController < Api::ApiController
       def index
-        @dog_walkings = if params[:only_scheduleds] == 'false'
-                          DogWalking.all
-                        else
-                          DogWalking.where('scheduled_at > ?', Time.now.to_date)
-                        end
+        dog_walkings = paginate dog_walking_scope, per_page: 20
 
-        @pagy, @records = pagy(@dog_walkings, items: 20)
-
-        pagy_serialized = {
-          page: @pagy.page,
-          pages: @pagy.pages,
-          items: @pagy.items
-        }
-
-        options = { meta: pagy_serialized }
-        dog_serializer = DogWalkingSerializer.new(@records.decorate(context: { paginate: @pagy }), options).serializable_hash
+        dog_serializer = DogWalkingSerializer.new(dog_walkings.decorate)
 
         render json: dog_serializer, status: :ok
+      end
+
+      private
+
+      def dog_walking_scope
+        return DogWalking.all unless only_scheduleds?
+
+        DogWalking.scheduleds
+      end
+
+      def only_scheduleds?
+        ['true', 1, '1'].include? params[:only_scheduleds]
       end
     end
   end

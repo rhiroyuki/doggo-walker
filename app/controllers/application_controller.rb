@@ -6,6 +6,6 @@ class ApplicationController < ActionController::API
   rescue_from Pagy::OverflowError, with: :raise_not_found
 
   def raise_not_found
-    raise ActionController::RoutingError, 'Not Found'
+    render 'not found', status: 404
   end
 end
