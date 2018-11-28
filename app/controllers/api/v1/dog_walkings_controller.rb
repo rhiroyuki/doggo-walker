@@ -17,7 +17,34 @@ module Api
         render json: DogWalkingSerializer.new(dog_walking), status: 200
       end
 
+      def create
+        dog_walking = DogWalkingBuilder.call(dog_walking_params)
+
+        if dog_walking.valid?
+          dog_walking.save
+
+          render dog_walking.to_json, status: 201
+        else
+          render json: { errors: dog_walking.errors.full_messages }, status: 422
+        end
+      end
+
       private
+
+      def dog_walking_params
+        params
+          .require(:dog_walking)
+          .permit(
+            :scheduled_on,
+            :price_value,
+            :scheduled_duration,
+            :latitude,
+            :longitude,
+            :started_time,
+            :ended_time,
+            pets: []
+          )
+      end
 
       def dog_walking_scope
         return DogWalking.all unless only_scheduleds?

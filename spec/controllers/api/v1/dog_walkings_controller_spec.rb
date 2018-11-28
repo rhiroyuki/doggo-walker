@@ -6,6 +6,74 @@ describe Api::V1::DogWalkingsController do
   before { Timecop.freeze(Time.now.to_date) }
   after { Timecop.return }
 
+  describe 'POST create' do
+    context 'when invalid' do
+      it 'returns a http status code 422' do
+        params = {
+          dog_walking: {
+            scheduled_on: '2018-11-21',
+            price_value: 0,
+            scheduled_duration: 30,
+            latitude: 30.00,
+            longitude: 12.00,
+            started_at: nil,
+            ended_at: nil,
+            pets: [4]
+          }
+        }
+
+        post :create, params: params
+
+        expect(response).to have_http_status(422)
+      end
+    end
+
+    context 'when valid' do
+      context 'when creating a dogwalking record' do
+        it 'returns a http status code 201' do
+          pet = create(:pet)
+
+          params = {
+            dog_walking: {
+              scheduled_on: '2018-11-21',
+              price_value: 0,
+              scheduled_duration: 30,
+              latitude: 30.00,
+              longitude: 12.00,
+              started_at: nil,
+              ended_at: nil,
+              pets: [pet.id]
+            }
+          }
+
+          post :create, params: params
+
+          expect(response).to have_http_status(201)
+        end
+
+        it 'creates successfully' do
+          pet = create(:pet)
+
+          params = {
+            dog_walking: {
+              scheduled_on: '2018-11-21T22:44:32-02:00',
+              price_value: 0,
+              scheduled_duration: 30,
+              latitude: 30.00,
+              longitude: 12.00,
+              started_at: nil,
+              ended_at: nil,
+              pets: [pet.id]
+            }
+          }
+
+          expect { post :create, params: params }
+            .to change { DogWalking.count }.by(1)
+        end
+      end
+    end
+  end
+
   describe 'GET show' do
     context 'when dogwalking record exists' do
       it 'returns a http status code 200' do
@@ -29,7 +97,7 @@ describe Api::V1::DogWalkingsController do
             'type' => 'dog_walking',
             'attributes' => {
               'status' => 'scheduled',
-              'scheduled_at' => nil,
+              'scheduled_on' => nil,
               'price_value' => '10.0',
               'scheduled_duration' => '30 minutes',
               'latitude' => nil,
@@ -48,7 +116,7 @@ describe Api::V1::DogWalkingsController do
     context 'when querying page' do
       context 'when page is valid' do
         it 'returns http status code 200' do
-          create(:dog_walking, scheduled_at: Time.now.tomorrow)
+          create(:dog_walking, scheduled_on: Time.now.tomorrow)
           get :index, params: { page: 1 }
 
           expect(response).to have_http_status(200)
@@ -72,8 +140,8 @@ describe Api::V1::DogWalkingsController do
       end
 
       it 'returns the body' do
-        create(:dog_walking, scheduled_at: Time.now.yesterday)
-        dog_walking = create(:dog_walking, scheduled_at: Time.now.tomorrow)
+        create(:dog_walking, scheduled_on: Time.now.yesterday)
+        dog_walking = create(:dog_walking, scheduled_on: Time.now.tomorrow)
 
         get :index, params: { only_scheduleds: true }
 
@@ -86,7 +154,7 @@ describe Api::V1::DogWalkingsController do
               'type' => 'dog_walking',
               'attributes' => {
                 'status' => 'scheduled',
-                'scheduled_at' => dog_walking.scheduled_at,
+                'scheduled_on' => dog_walking.scheduled_on.to_s,
                 'price_value' => '10.0',
                 'scheduled_duration' => '30 minutes',
                 'latitude' => nil,
@@ -109,7 +177,7 @@ describe Api::V1::DogWalkingsController do
       end
 
       it 'returns the body' do
-        dog_walking = create(:dog_walking, scheduled_at: Time.now.tomorrow)
+        dog_walking = create(:dog_walking, scheduled_on: Time.now.tomorrow)
 
         get :index
 
@@ -122,7 +190,7 @@ describe Api::V1::DogWalkingsController do
               'type' => 'dog_walking',
               'attributes' => {
                 'status' => 'scheduled',
-                'scheduled_at' => dog_walking.scheduled_at,
+                'scheduled_on' => dog_walking.scheduled_on.to_s,
                 'price_value' => '10.0',
                 'scheduled_duration' => '30 minutes',
                 'latitude' => nil,
