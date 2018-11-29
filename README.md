@@ -1,24 +1,54 @@
-# README
+# DoggoWalker System
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+<img src="https://www.publicdomainpictures.net/pictures/120000/velka/dog-walking-1425056286ZHy.jpg" width="250">
 
-Things you may want to cover:
+## Requirements
+- Ruby 2.5.3
+- Rails 5.2
+- Postgres
 
-* Ruby version
+## Setup
+`$ bin/setup`
 
-* System dependencies
+## API Endpoints
 
-* Configuration
+------
+### PUT /api/v1/dog_walkings/:id/start_walk(.:format)
+```
+# param example
+params: { id: dog_walking.id }
+```
+------
 
-* Database creation
+### PUT /api/v1/dog_walkings/:id/finish_walk(.:format)
+```
+# param example
+params: { id: dog_walking.id }
+```
+------
+### GET /api/v1/dog_walkings(.:format)
 
-* Database initialization
+------
+### POST /api/v1/dog_walkings(.:format)
+```
+# param example
+params = {
+  dog_walking: {
+    scheduled_on: '2018-11-21',
+    price_value: 0,
+    scheduled_duration: 30,
+    latitude: 30.00,
+    longitude: 12.00,
+    started_at: nil,
+    ended_at: nil,
+    pets: [pet_ids]
+  }
+}
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```
+------
+### GET /api/v1/dog_walkings/:id(.:format)
+```
+# param example
+params = { id: 1 }
+```
