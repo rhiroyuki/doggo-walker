@@ -30,6 +30,7 @@ end
 
 group :test do
   gem 'database_cleaner'
+  gem 'rspec_junit_formatter'
   gem 'rubocop', '~> 0.60.0', require: false
   gem 'shoulda-matchers', git:
     'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'

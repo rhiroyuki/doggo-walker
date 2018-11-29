@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/rhiroyuki/doggo_walker.svg?style=svg)](https://circleci.com/gh/rhiroyuki/doggo_walker)
+
 # DoggoWalker System
 
 <img src="https://www.publicdomainpictures.net/pictures/120000/velka/dog-walking-1425056286ZHy.jpg" width="250">
