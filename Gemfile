@@ -33,6 +33,7 @@ group :test do
   gem 'rubocop', '~> 0.60.0', require: false
   gem 'shoulda-matchers', git:
     'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
+  gem 'simplecov', require: false
 end
 
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
