@@ -14,6 +14,7 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'pry-rails', '~>0.3.7'
 gem 'puma', '~> 3.11'
 gem 'rails', '~> 5.2.1'
+gem 'time_difference'
 
 group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'

@@ -14,7 +14,7 @@ module Api
       def show
         dog_walking = DogWalking.find(params[:id]).decorate
 
-        render json: DogWalkingSerializer.new(dog_walking), status: 200
+        render json: DogWalkingSerializer.new(dog_walking, params: { action: params[:action] }), status: 200
       end
 
       def create

@@ -77,7 +77,7 @@ describe Api::V1::DogWalkingsController do
   describe 'GET show' do
     context 'when dogwalking record exists' do
       it 'returns a http status code 200' do
-        create(:dog_walking, id: 1)
+        create(:dog_walking, :in_progress, id: 1)
 
         get :show, params: { id: 1 }
 
@@ -85,7 +85,7 @@ describe Api::V1::DogWalkingsController do
       end
 
       it 'returns the dogwalking' do
-        dog_walking = create(:dog_walking)
+        dog_walking = create(:dog_walking, started_at: Time.now, status: :in_progress)
 
         get :show, params: { id: dog_walking.id }
 
@@ -96,13 +96,14 @@ describe Api::V1::DogWalkingsController do
             'id' => dog_walking.id.to_s,
             'type' => 'dog_walking',
             'attributes' => {
-              'status' => 'scheduled',
-              'scheduled_on' => nil,
+              'elapsed_time' => 'less than a minute',
+              'status' => 'in_progress',
+              'scheduled_on' => dog_walking.scheduled_on.to_s,
               'price_value' => '10.0',
               'scheduled_duration' => '30 minutes',
               'latitude' => nil,
               'longitude' => nil,
-              'started_at' => nil,
+              'started_at' => '2018-11-29T00:00:00.000Z',
               'ended_at' => nil
             }
           }

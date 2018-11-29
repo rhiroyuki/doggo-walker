@@ -10,8 +10,8 @@ describe DogWalkingBuilder do
     it { is_expected.to delegate_method(:scheduled_duration=).with_arguments(anything).to(:built_object) }
     it { is_expected.to delegate_method(:latitude=).with_arguments(anything).to(:built_object) }
     it { is_expected.to delegate_method(:longitude=).with_arguments(anything).to(:built_object) }
-    it { is_expected.to delegate_method(:started_time=).with_arguments(anything).to(:built_object) }
-    it { is_expected.to delegate_method(:ended_time=).with_arguments(anything).to(:built_object) }
+    it { is_expected.to delegate_method(:started_at=).with_arguments(anything).to(:built_object) }
+    it { is_expected.to delegate_method(:ended_at=).with_arguments(anything).to(:built_object) }
     it { is_expected.to delegate_method(:created_at=).with_arguments(anything).to(:built_object) }
     it { is_expected.to delegate_method(:updated_at=).with_arguments(anything).to(:built_object) }
     it { is_expected.to delegate_method(:save).to(:built_object) }

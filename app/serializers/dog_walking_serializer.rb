@@ -11,4 +11,8 @@ class DogWalkingSerializer
              :longitude,
              :started_at,
              :ended_at
+
+  attribute :elapsed_time, if: Proc.new { |record, params|
+    params[:action] == 'show'
+  }
 end
