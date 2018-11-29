@@ -6,6 +6,84 @@ describe Api::V1::DogWalkingsController do
   before { Timecop.freeze(Time.now.to_date) }
   after { Timecop.return }
 
+  describe 'PUT finish_walk' do
+    context 'when record exists' do
+      it 'responds with http code 200' do
+        dog_walking = create(:dog_walking, :with_dogs, status: :in_progress)
+        put :finish_walk, params: { id: dog_walking.id }
+
+        expect(response).to have_http_status(200)
+      end
+
+      it 'changes the status of dogwalking to finish' do
+        dog_walking = create(:dog_walking, :with_dogs, status: :in_progress)
+
+        expect {
+          put :finish_walk, params: { id: dog_walking.id }
+          dog_walking.reload
+        }.to change(dog_walking, :status).from('in_progress').to('finished')
+      end
+    end
+
+    context 'when record is invalid' do
+      context 'when inexistent' do
+        it 'responds with http code 404' do
+          put :finish_walk, params: { id: 1 }
+
+          expect(response).to have_http_status(404)
+        end
+      end
+
+      context 'when already finished' do
+        it 'responds with http code 422' do
+          dog_walking = create(:dog_walking, :with_dogs, status: :finished)
+          put :finish_walk, params: { id: dog_walking.id }
+
+          expect(response).to have_http_status(422)
+        end
+      end
+    end
+  end
+
+  describe 'PUT start_walk' do
+    context 'when record exists' do
+      it 'responds with http code 200' do
+        dog_walking = create(:dog_walking, :with_dogs, status: :scheduled)
+        put :start_walk, params: { id: dog_walking.id }
+
+        expect(response).to have_http_status(200)
+      end
+
+      it 'changes the status of dogwalking to in_progress' do
+        dog_walking = create(:dog_walking, :with_dogs, status: :scheduled)
+
+        expect {
+          put :start_walk, params: { id: dog_walking.id }
+          dog_walking.reload
+        }.to change(dog_walking, :status).from('scheduled').to('in_progress')
+      end
+    end
+
+    context 'when record is invalid' do
+      context 'when inexistent' do
+        it 'responds with http code 404' do
+          put :start_walk, params: { id: 1 }
+
+          expect(response).to have_http_status(404)
+        end
+      end
+
+      context 'when already finished' do
+        it 'responds with http code 422' do
+          dog_walking = create(:dog_walking, :with_dogs, status: :finished)
+          put :start_walk, params: { id: dog_walking.id }
+
+          expect(response).to have_http_status(422)
+        end
+      end
+    end
+  end
+
   describe 'POST create' do
     context 'when invalid' do
       it 'returns a http status code 422' do

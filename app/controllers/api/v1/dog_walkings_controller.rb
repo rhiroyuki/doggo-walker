@@ -29,6 +29,30 @@ module Api
         end
       end
 
+      def start_walk
+        dog_walking = DogWalking.find(params[:id])
+
+        if dog_walking.scheduled?
+          dog_walking.in_progress!
+
+          render 'ok', status: 200
+        else
+          render 'invalid', status: 422
+        end
+      end
+
+      def finish_walk
+        dog_walking = DogWalking.find(params[:id])
+
+        if dog_walking.in_progress?
+          dog_walking.finished!
+
+          render 'ok', status: 200
+        else
+          render 'invalid', status: 422
+        end
+      end
+
       private
 
       def dog_walking_params
